@@ -19,9 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
-
 public class BouncyCastleByProviderByteEncryptorTest 
         extends AbstractPBEByteEncryptorTest {
 
@@ -29,7 +26,7 @@ public class BouncyCastleByProviderByteEncryptorTest
     protected StandardPBEByteEncryptor createPBEByteEncryptor() {
         StandardPBEByteEncryptor encryptor = new StandardPBEByteEncryptor();
         encryptor.setAlgorithm("PBEWITHSHA256AND128BITAES-CBC-BC");
-        encryptor.setProvider(new BouncyCastleProvider());
+        encryptor.setProvider(SCPROVIDER);
         return encryptor;
     }
 

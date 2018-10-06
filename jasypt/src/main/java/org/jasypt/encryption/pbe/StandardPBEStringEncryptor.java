@@ -20,9 +20,11 @@
 package org.jasypt.encryption.pbe;
 
 import java.security.Provider;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
 
 import org.jasypt.commons.CommonUtils;
-import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.jasypt.encryption.pbe.config.PBEConfig;
 import org.jasypt.encryption.pbe.config.StringPBEConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
@@ -197,10 +199,11 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
     // The StandardPBEByteEncryptor that will be internally used.
     private final StandardPBEByteEncryptor byteEncryptor;
     
-    // BASE64 encoder which will make sure the returned results are
-    // valid US-ASCII strings.
-    // The Base64 encoder is THREAD-SAFE
-    private final Base64 base64;
+    // BASE64 encoder which will make sure the returned digests are
+    // valid UTF-8 strings (if the user chooses BASE64 output).
+    // This objects are THREAD-SAFE
+    private final Encoder base64Encoder;
+    private final Decoder base64Decoder;
 
     
     
@@ -210,7 +213,8 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
     public StandardPBEStringEncryptor() {
         super();
         this.byteEncryptor = new StandardPBEByteEncryptor();
-        this.base64 = new Base64();
+        this.base64Encoder = Base64.getEncoder();
+        this.base64Decoder= Base64.getDecoder();
     }
 
 
@@ -222,7 +226,8 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
     private StandardPBEStringEncryptor(final StandardPBEByteEncryptor standardPBEByteEncryptor) {
         super();
         this.byteEncryptor = standardPBEByteEncryptor;
-        this.base64 = new Base64();
+        this.base64Encoder = Base64.getEncoder();
+        this.base64Decoder= Base64.getDecoder();
     }
 
     
@@ -645,7 +650,7 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
             // the safest result String possible.
             String result = null;
             if (this.stringOutputTypeBase64) {
-                encryptedMessage = this.base64.encode(encryptedMessage);
+                encryptedMessage = this.base64Encoder.encode(encryptedMessage);
                 result = new String(encryptedMessage,ENCRYPTED_MESSAGE_CHARSET);
             } else {
                 result = CommonUtils.toHexadecimal(encryptedMessage);
@@ -715,7 +720,7 @@ public final class StandardPBEStringEncryptor implements PBEStringCleanablePassw
                 encryptedMessageBytes = 
                     encryptedMessage.getBytes(ENCRYPTED_MESSAGE_CHARSET);
                 encryptedMessageBytes = 
-                    this.base64.decode(encryptedMessageBytes);
+                    this.base64Decoder.decode(encryptedMessageBytes);
             } else {
                 encryptedMessageBytes = 
                     CommonUtils.fromHexadecimal(encryptedMessage);

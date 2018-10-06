@@ -22,7 +22,8 @@ package org.jasypt.digest;
 
 import junit.framework.TestCase;
 
-import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
+import java.nio.charset.StandardCharsets;
+
 import org.jasypt.util.password.rfc2307.RFC2307SSHAPasswordEncryptor;
 
 public class StandardStringDigesterInvertedSaltTest extends TestCase {
@@ -50,7 +51,7 @@ public class StandardStringDigesterInvertedSaltTest extends TestCase {
 
         assertTrue(digester.matches(null, null));
         
-        assertTrue(Base64.isArrayByteBase64(digest.getBytes("US-ASCII")));
+        assertNotNull(digest.getBytes(StandardCharsets.UTF_8));
         
         for (int i = 0; i < 100; i++) {
             assertTrue(digester.matches(message, digest));

@@ -22,7 +22,8 @@ package org.jasypt.util.text;
 
 import junit.framework.TestCase;
 
-import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
+import java.nio.charset.StandardCharsets;
+
 
 
 public class BasicTextEncryptorTest extends TestCase {
@@ -39,7 +40,7 @@ public class BasicTextEncryptorTest extends TestCase {
         
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = textEncryptor.encrypt(message);
-            assertTrue(Base64.isArrayByteBase64(encryptedMessage.getBytes("US-ASCII")));
+            assertNotNull(encryptedMessage.getBytes(StandardCharsets.UTF_8));
             assertEquals(textEncryptor.decrypt(encryptedMessage), message);
         }
         
@@ -47,7 +48,7 @@ public class BasicTextEncryptorTest extends TestCase {
         textEncryptor2.setPassword(password);
         for (int i = 0; i < 100; i++) {
             String encryptedMessage = textEncryptor.encrypt(message);
-            assertTrue(Base64.isArrayByteBase64(encryptedMessage.getBytes("US-ASCII")));
+            assertNotNull(encryptedMessage.getBytes(StandardCharsets.UTF_8));
             assertEquals(textEncryptor2.decrypt(encryptedMessage), message);
         }
         

@@ -24,7 +24,7 @@ import java.security.MessageDigest;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class MessageDigesterTest extends TestCase {

@@ -20,19 +20,23 @@
 package org.jasypt.digest;
 
 
+import java.security.Provider;
 import java.security.Security;
 
 import junit.framework.TestCase;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jasypt.digest.config.EnvironmentStringDigesterConfig;
 import org.jasypt.digest.config.SimpleDigesterConfig;
 import org.jasypt.digest.config.SimpleStringDigesterConfig;
 import org.jasypt.salt.FixedByteArraySaltGenerator;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class StandardHexadecimalStringDigesterTest extends TestCase {
 
-    
+	protected final static Provider SCPROVIDER = new BouncyCastleProvider();
+    static {
+    	Security.addProvider(SCPROVIDER);
+    }
     
     public void testDigest() throws Exception {
         
@@ -118,7 +122,7 @@ public class StandardHexadecimalStringDigesterTest extends TestCase {
         StandardStringDigester digester6 = new StandardStringDigester();
         digester6.setStringOutputType("hexadecimal");
         SimpleDigesterConfig dig6Config = new SimpleDigesterConfig();
-        dig6Config.setProvider(new BouncyCastleProvider());
+        dig6Config.setProvider(SCPROVIDER);
         digester6.setConfig(dig6Config);
         String digest6 = digester6.digest(message);
         
@@ -126,13 +130,10 @@ public class StandardHexadecimalStringDigesterTest extends TestCase {
             assertTrue(digester6.matches(message, digest6));
         }
 
-
-        Security.addProvider(new BouncyCastleProvider());
-        
         StandardStringDigester digester7 = new StandardStringDigester();
         digester7.setStringOutputType("hexadecimal");
         SimpleDigesterConfig dig7Config = new SimpleDigesterConfig();
-        dig7Config.setProviderName("BC");
+        dig7Config.setProviderName(SCPROVIDER.getName());
         digester7.setConfig(dig7Config);
         String digest7 = digester7.digest(message);
         
@@ -142,7 +143,7 @@ public class StandardHexadecimalStringDigesterTest extends TestCase {
         
         StandardStringDigester digester8 = new StandardStringDigester();
         SimpleStringDigesterConfig dig8Config = new SimpleStringDigesterConfig();
-        dig8Config.setProvider(new BouncyCastleProvider());
+        dig8Config.setProvider(SCPROVIDER);
         dig8Config.setProviderName("SUN");
         dig8Config.setAlgorithm("WHIRLPOOL");
         dig8Config.setStringOutputType("hexa");
@@ -156,7 +157,7 @@ public class StandardHexadecimalStringDigesterTest extends TestCase {
         StandardStringDigester digester9 = new StandardStringDigester();
         digester9.setStringOutputType("hexadecimal");
         EnvironmentStringDigesterConfig dig9Config = new EnvironmentStringDigesterConfig();
-        dig9Config.setProvider(new BouncyCastleProvider());
+        dig9Config.setProvider(SCPROVIDER);
         dig9Config.setAlgorithm("WHIRLPOOL");
         digester9.setConfig(dig9Config);
         

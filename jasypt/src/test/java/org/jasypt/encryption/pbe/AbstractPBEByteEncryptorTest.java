@@ -19,6 +19,8 @@
  */
 package org.jasypt.encryption.pbe;
 
+import java.security.Provider;
+import java.security.Security;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
@@ -26,8 +28,14 @@ import junit.framework.TestCase;
 import org.jasypt.encryption.pbe.config.SimplePBEConfig;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.salt.FixedStringSaltGenerator;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public abstract class AbstractPBEByteEncryptorTest extends TestCase {
+
+	protected final static Provider SCPROVIDER = new BouncyCastleProvider();
+    static {
+    	Security.addProvider(SCPROVIDER);
+    }
 
     public void testEncryptAndDecrypt() throws Exception {
 

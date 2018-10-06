@@ -18,9 +18,7 @@
  * =============================================================================
  */
 package org.jasypt.encryption.pbe;
-
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 
 public class BouncyCastleByProviderBigIntegerEncryptorTest 
         extends AbstractPBEBigIntegerEncryptorTest {

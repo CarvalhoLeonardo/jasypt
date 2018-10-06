@@ -21,7 +21,6 @@ package org.jasypt.encryption.pbe;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-
 public class BouncyCastleByProviderStringEncryptorTest 
         extends AbstractPBEStringEncryptorTest {
 

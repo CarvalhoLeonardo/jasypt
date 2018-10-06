@@ -21,6 +21,7 @@ package org.jasypt.encryption.pbe;
 
 import java.security.InvalidKeyException;
 import java.security.Provider;
+import java.security.Security;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -38,6 +39,7 @@ import org.jasypt.normalization.Normalizer;
 import org.jasypt.salt.FixedSaltGenerator;
 import org.jasypt.salt.RandomSaltGenerator;
 import org.jasypt.salt.SaltGenerator;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * <p>
@@ -126,8 +128,7 @@ import org.jasypt.salt.SaltGenerator;
  */
 public final class StandardPBEByteEncryptor implements PBEByteCleanablePasswordEncryptor {
 
-
-    /**
+	/**
      * The default algorithm to be used if none specified: PBEWithMD5AndDES.
      */
     public static final String DEFAULT_ALGORITHM = "PBEWithMD5AndDES";

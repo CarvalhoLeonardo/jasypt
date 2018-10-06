@@ -21,10 +21,20 @@ package org.jasypt.encryption.pbe;
 
 import junit.framework.TestCase;
 
+import java.security.Provider;
+import java.security.Security;
+
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public abstract class AbstractPBEStringEncryptorTest extends TestCase {
+	protected final static Provider SCPROVIDER = new BouncyCastleProvider();
+    static {
+    	Security.addProvider(SCPROVIDER);
+    }
 
+
+    
     public void testEncryptAndDecrypt() throws Exception {
 
         String password = "A PASSWORD BEING SET";

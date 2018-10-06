@@ -22,8 +22,7 @@ package org.jasypt.util.password;
 
 import junit.framework.TestCase;
 
-import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
-
+import java.nio.charset.StandardCharsets;
 
 public class BasicPasswordEncryptorTest extends TestCase {
 
@@ -35,7 +34,7 @@ public class BasicPasswordEncryptorTest extends TestCase {
         
         BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
         String encryptedPassword = passwordEncryptor.encryptPassword(password);
-        assertTrue(Base64.isArrayByteBase64(encryptedPassword.getBytes("US-ASCII")));
+        assertNotNull(encryptedPassword.getBytes(StandardCharsets.UTF_8));
         
         for (int i = 0; i < 100; i++) {
             assertTrue(passwordEncryptor.checkPassword(password, encryptedPassword));

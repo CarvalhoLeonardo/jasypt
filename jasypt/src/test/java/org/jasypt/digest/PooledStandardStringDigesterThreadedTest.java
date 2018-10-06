@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 
 public class PooledStandardStringDigesterThreadedTest extends TestCase {
 

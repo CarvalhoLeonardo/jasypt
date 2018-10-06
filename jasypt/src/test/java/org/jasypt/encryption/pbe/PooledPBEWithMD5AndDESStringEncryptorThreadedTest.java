@@ -19,7 +19,7 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 
 

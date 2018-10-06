@@ -19,8 +19,6 @@
  */
 package org.jasypt.encryption.pbe;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 
 public class BouncyCastleByProviderBigDecimalEncryptorTest 
         extends AbstractPBEBigDecimalEncryptorTest {
@@ -29,7 +27,7 @@ public class BouncyCastleByProviderBigDecimalEncryptorTest
     protected PBEBigDecimalEncryptor createPBEDecimalEncryptor() {
         StandardPBEBigDecimalEncryptor encryptor = new StandardPBEBigDecimalEncryptor();
         encryptor.setAlgorithm("PBEWITHSHA256AND128BITAES-CBC-BC");
-        encryptor.setProvider(new BouncyCastleProvider());
+        encryptor.setProvider(SCPROVIDER);
         return encryptor;
     }
 

@@ -20,13 +20,21 @@
 package org.jasypt.encryption.pbe;
 
 
+import java.security.Provider;
+import java.security.Security;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public abstract class AbstractPBEStringEncryptorThreadedTest extends TestCase {
+
+	protected final static Provider SCPROVIDER = new BouncyCastleProvider();
+    static {
+    	Security.addProvider(SCPROVIDER);
+    }
 
 
     private int numThreads = 10;

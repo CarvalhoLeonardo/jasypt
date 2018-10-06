@@ -24,7 +24,7 @@ import java.util.Properties;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.jasypt.util.text.BasicTextEncryptor;
 
 public class EncryptablePropertiesTest extends TestCase {

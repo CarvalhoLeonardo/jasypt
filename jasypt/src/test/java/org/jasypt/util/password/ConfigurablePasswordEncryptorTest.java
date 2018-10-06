@@ -20,16 +20,21 @@
 package org.jasypt.util.password;
 
 
+import java.nio.charset.StandardCharsets;
+import java.security.Provider;
 import java.security.Security;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import junit.framework.TestCase;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 
 public class ConfigurablePasswordEncryptorTest extends TestCase {
 
-    
+    private final static Provider SCPROVIDER = new BouncyCastleProvider();
+    static {
+    	Security.addProvider(SCPROVIDER);
+    }
     
     public void testDigest() throws Exception {
 
@@ -37,10 +42,10 @@ public class ConfigurablePasswordEncryptorTest extends TestCase {
         
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm("WHIRLPOOL");
-        passwordEncryptor.setProvider(new BouncyCastleProvider());
+        passwordEncryptor.setProvider(SCPROVIDER);
         
         String encryptedPassword = passwordEncryptor.encryptPassword(password);
-        assertTrue(Base64.isArrayByteBase64(encryptedPassword.getBytes("US-ASCII")));
+        assertNotNull(encryptedPassword.getBytes(StandardCharsets.UTF_8));
         
         for (int i = 0; i < 10; i++) {
             assertTrue(passwordEncryptor.checkPassword(password, encryptedPassword));
@@ -53,8 +58,7 @@ public class ConfigurablePasswordEncryptorTest extends TestCase {
 
         ConfigurablePasswordEncryptor digester2 = new ConfigurablePasswordEncryptor();
         digester2.setAlgorithm("WHIRLPOOL");
-        Security.addProvider(new BouncyCastleProvider());
-        digester2.setProviderName("BC");
+        digester2.setProviderName(SCPROVIDER.getName());
         
         for (int i = 0; i < 10; i++) {
             assertTrue(digester2.checkPassword(password, encryptedPassword));

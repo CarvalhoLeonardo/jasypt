@@ -20,9 +20,11 @@
 package org.jasypt.digest;
 
 import java.security.Provider;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
 
 import org.jasypt.commons.CommonUtils;
-import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.jasypt.digest.config.DigesterConfig;
 import org.jasypt.digest.config.StringDigesterConfig;
 import org.jasypt.exceptions.AlreadyInitializedException;
@@ -269,9 +271,10 @@ public final class StandardStringDigester implements StringDigester {
     
     
     // BASE64 encoder which will make sure the returned digests are
-    // valid US-ASCII strings (if the user chooses BASE64 output).
-    // The Bsae64 encoder is THREAD-SAFE
-    private final Base64 base64;
+    // valid UTF-8 strings (if the user chooses BASE64 output).
+    // This objects are THREAD-SAFE
+    private final Encoder base64Encoder;
+    private final Decoder base64Decoder;
 
 
     
@@ -281,7 +284,8 @@ public final class StandardStringDigester implements StringDigester {
     public StandardStringDigester() {
         super();
         this.byteDigester = new StandardByteDigester();
-        this.base64 = new Base64();
+        this.base64Encoder = Base64.getEncoder();
+        this.base64Decoder= Base64.getDecoder();
     }
 
 
@@ -293,7 +297,8 @@ public final class StandardStringDigester implements StringDigester {
     private StandardStringDigester(final StandardByteDigester standardByteDigester) {
         super();
         this.byteDigester = standardByteDigester;
-        this.base64 = new Base64();
+        this.base64Encoder = Base64.getEncoder();
+        this.base64Decoder= Base64.getDecoder();
     }
 
     
@@ -932,7 +937,7 @@ public final class StandardStringDigester implements StringDigester {
             // We encode the result in BASE64 or HEXADECIMAL so that we obtain
             // the safest result String possible.
             if (this.stringOutputTypeBase64) {
-                digest = this.base64.encode(digest);
+                digest = this.base64Encoder.encode(digest);
                 result.append(new String(digest, DIGEST_CHARSET)); 
             } else {
                 result.append(CommonUtils.toHexadecimal(digest));
@@ -1043,7 +1048,7 @@ public final class StandardStringDigester implements StringDigester {
             if (this.stringOutputTypeBase64) {
                 // The digest must be a US-ASCII String BASE64-encoded
                 digestBytes = processedDigest.getBytes(DIGEST_CHARSET);
-                digestBytes = this.base64.decode(digestBytes);
+                digestBytes = this.base64Decoder.decode(digestBytes);
             } else {
                 digestBytes = CommonUtils.fromHexadecimal(processedDigest);
             }

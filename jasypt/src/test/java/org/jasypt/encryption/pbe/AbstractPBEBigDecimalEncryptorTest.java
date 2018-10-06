@@ -21,12 +21,19 @@ package org.jasypt.encryption.pbe;
 
 
 import java.math.BigDecimal;
+import java.security.Provider;
+import java.security.Security;
 
 import junit.framework.TestCase;
 
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public abstract class AbstractPBEBigDecimalEncryptorTest extends TestCase {
+    protected final static Provider SCPROVIDER = new BouncyCastleProvider();
+    static {
+    	Security.addProvider(SCPROVIDER);
+    }
 
     public void testEncryptAndDecrypt() throws Exception {
 
